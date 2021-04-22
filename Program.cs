@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using OfficeOpenXml;
+using OfficeOpenXml;//you need EPPlus library(https://www.nuget.org/packages/EPPlus/)
 using System.Linq;
 using System.Text;
 
@@ -26,18 +26,18 @@ namespace contact
         {
             streamWriter = new StreamWriter("StoreVcfPath.vcf");
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            using (ExcelPackage xlPackage = new ExcelPackage(new FileInfo("xlsxfilepath.xlsx")))
+            using (ExcelPackage xlPackage = new ExcelPackage(new FileInfo("xlsxFilePath.xlsx")))
             {
                 var myWorksheet = xlPackage.Workbook.Worksheets.FirstOrDefault(); //select sheet
                 var totalRows = myWorksheet.Dimension.End.Row;
                 var totalColumns = myWorksheet.Dimension.End.Column; 
             
-                for (int rowNum = 1; rowNum <= totalRows; rowNum++) //start from first row to the end row
+                for (int rowNum = 1; rowNum <= totalRows; rowNum++) //start from first row to the last row
                 {
                     var row = myWorksheet.Cells[rowNum,1,rowNum,totalColumns].Select(c => c.Value == null ? string.Empty : c.Value.ToString());//read rows
                    var cells= row.ToList();//stringlist of cells in the row 
                    if(!cells[4].Equals(string.Empty)){
-                       writecontact(new contact{name=cells[0],phone=cells[4]});//her idex 0 is col that store name and idex 4 store phone number
+                       writecontact(new contact{name=cells[0],phone=cells[4]});//here idex 0 is the col that store name and idex 4 store phone number
                    }
                 }
             }
