@@ -28,16 +28,16 @@ namespace contact
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (ExcelPackage xlPackage = new ExcelPackage(new FileInfo("xlsxFilePath.xlsx")))
             {
-                var myWorksheet = xlPackage.Workbook.Worksheets.FirstOrDefault(); //select sheet
-                var totalRows = myWorksheet.Dimension.End.Row;
-                var totalColumns = myWorksheet.Dimension.End.Column; 
+                var myWorksheet = xlPackage.Workbook.Worksheets.FirstOrDefault(); //select the first sheet ,(in  my file i store the contacts info in the first sheet)
+                var totalRows = myWorksheet.Dimension.End.Row;//get row count
+                var totalColumns = myWorksheet.Dimension.End.Column; //get Columns count
             
                 for (int rowNum = 1; rowNum <= totalRows; rowNum++) //start from first row to the last row
                 {
-                    var row = myWorksheet.Cells[rowNum,1,rowNum,totalColumns].Select(c => c.Value == null ? string.Empty : c.Value.ToString());//read rows
-                   var cells= row.ToList();//stringlist of cells in the row 
+                   var row = myWorksheet.Cells[rowNum,1,rowNum,totalColumns].Select(c => c.Value == null ? string.Empty : c.Value.ToString());//read row
+                   var cells= row.ToList();
                    if(!cells[4].Equals(string.Empty)){
-                       writecontact(new contact{name=cells[0],phone=cells[4]});//here idex 0 is the col that store name and idex 4 store phone number
+                       writecontact(new contact{name=cells[0],phone=cells[4]});//here index 0 refers to the col that store name and index 4 Refers to the col that store phone number
                    }
                 }
             }
